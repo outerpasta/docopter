@@ -1,6 +1,6 @@
 ## Synopsis
 
-A script runner that parses scripts that use docopt and creates web forms for them.
+A script runner that parses scripts that use docopt and creates web forms for executing them.
 Script output is shown in realtime using websockets.
 
 Currently only python and bash are supported.

@@ -1,7 +1,9 @@
 ## Synopsis
 
-A script runner that parses docopt scripts and creates web forms for them.
+A script runner that parses scripts that use docopt and creates web forms for them.
 Script output is shown in realtime using websockets.
+
+Currently only python and bash are supported.
 
 ![DEMO](https://raw.githubusercontent.com/outerpasta/docopter/master/demo/Screen%20Shot%202016-02-01%20at%2012.24.10%20AM.png)
 
@@ -23,3 +25,8 @@ $ ./tmp/bin/pip install -r requirements.txt
 ```
 python docopter.py
 ```
+
+## Caveats
+- There is currently no support for docopt 'command' argument type.
+- There is currently no suport for more than just simple args/options/default-options. 
+Things like mutually exclusive arguments or multiple use cases aren't working yet.

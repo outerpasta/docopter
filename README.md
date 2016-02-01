@@ -21,12 +21,20 @@ $ virtualenv tmp
 $ ./tmp/bin/pip install -r requirements.txt
 ```
 
+Put your scripts in docopter/scripts
+Don't forget, you'll have to -
+```
+$ chmod +x scripts/*
+```
+for them to work.
+
 ## Running
 ```
 python docopter.py
 ```
 
 ## Caveats
+- Options within bash scripts are not working yet.
 - There is currently no support for docopt 'command' argument type.
 - There is currently no suport for more than just simple args/options/default-options. 
 Things like mutually exclusive arguments or multiple use cases aren't working yet.

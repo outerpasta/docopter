@@ -84,8 +84,9 @@ class LogStreamer(tornado.websocket.WebSocketHandler):
             logging.info("StreamClosedError")
 
     def write_error(self, data):
-        logging.info("Returning to client: %s" % data.strip())
-        self.write_message("<font color=red>" + data.strip() + "</font><br/>")
+        if data:
+            logging.info("Returning to client: %s" % data.strip())
+            self.write_message("<font color=red>" + data.strip() + "</font><br/>")
         # from IPython import embed;embed()
         # self.proc.stdout.read_until("\n", self.write_line)
 

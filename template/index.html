@@ -2,44 +2,139 @@
 <html>
 <head>
   <title>Docopter</title>
-  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
-  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>Docopter</h1>
-    <hr>
-      WebSocket status : <span id="message"></span>
-    <hr>
-    <pre>
-      <div id="content">
-      </div>
-    </pre>
-  </div>
-  <script>
-    var ws = new WebSocket('ws://localhost:7777/tail/get_user');
-    var $message = $('#message');
-    var $content = $('#content');
+<script>
+function HideContent(d) {
+document.getElementById(d).style.display = "none";
+}
+function ShowContent(d) {
+document.getElementById(d).style.display = "block";
+}
+function ReverseDisplay(d) {
+if(document.getElementById(d).style.display == "none") { document.getElementById(d).style.display = "block"; }
+else { document.getElementById(d).style.display = "none"; }
+}
+</script>
+<div class="container">
+  <h1>Docopter</h1>
+    <div class="container-fluid">
+      <ul>
+        {% for script in scripts %}
+        <hr>
+          <div class="row">
+            <div class="col-xs-6">
+                <div style="display:inline-block;">
+                    <h3 style="display:inline-block;">{{script['name']}}</h3>
+                    <a style="display:inline-block;"href="javascript:ReverseDisplay('{{script['name']}}doc')">
+                        <!--<h6>help</h6>-->
+                        <span class="glyphicon glyphicon-plus-sign"></span>
+                    </a>
+                </div>
+                {% for path in script['paths'] %}
+                    <form id="{{script['name']}}form" name="{{script['name']}}">
+                        <button id="{{script['name']}}run" type="button" class="btn btn-xs btn-primary-outline">execute</button>
+                        {% for arg in path['arguments'] %}
+                        <input type="text" name="{{arg}}" placeholder="{{arg}}">
+                        {% end %}
+                        <br>
+                        {% for option in path['default_options'] %}
+                          <!--<span> {{option.name}} </span><input type="text" name="{{option}}" value="{{option.value}}">-->
+                          <span> {{option.name}} </span><input type="text" id="args" name="{{option.name}}" value="{{option.value}}">
+                        {% end %}
+                        {% for option in path['options'] %}
+                          <!--<span> {{option.name}} </span><input type="text" name="{{option}}">-->
+                          <span> {{option.name}} </span><input type="text" name="{{option.name}}">
+                        {% end %}
+                        {% for flag in path['flags'] %}
+                          <!--<span> {{flag.name}} </span><input type="checkbox" name="{{flag}}">-->
+                          <span> {{flag.name}} </span><input type="checkbox" name="{{flag.name}}">
+                        {% end %}
+                        {% for flag in path['extras'] %}
+                          <!--<span> {{flag.name}} </span><input type="checkbox" name="{{flag}}">-->
+                          <span> {{flag.name}} </span><input type="checkbox" name="{{flag.name}}">
+                        {% end %}
 
-    ws.onopen = function(){
-      $message.attr("class", 'label label-success');
-      $message.text('open');
-    };
-    ws.onmessage = function(ev){
-      $message.attr("class", 'label label-info');
-      $message.hide();
-      $message.fadeIn("fast");
-      $message.text('received message');
-      $content.append(ev.data);
-    };
-    ws.onclose = function(ev){
-      $message.attr("class", 'label label-important');
-      $message.text('closed');
-    };
-    ws.onerror = function(ev){
-      $message.attr("class", 'label label-warning');
-      $message.text('error occurred');
-    };
-  </script>
+                    </form>
+
+                    <div id="{{script['name']}}doc" style="display:none;"><pre>{{script['doc']}}</pre></div>
+
+                  <script>
+                    //$("#{{script['name']}}formfield").keyup(function(event){
+                    //    if(event.keyCode == 13){
+                    //        $("#{{script['name']}}run").click();
+                    //    }
+                    //});
+                    $(document).ready(function () {
+
+                        $(document.forms["{{script['name']}}form"]).submit(function (e) {
+                            e.preventDefault(); //prevent default form submit
+                            $("#{{script['name']}}run").click()
+                        });
+
+                        $("#{{script['name']}}run").click(
+                            function () {
+                                ShowContent('{{script['name']}}div');
+                                var {{script['name']}}ws = new WebSocket('ws://localhost:7777/{{script['name']}}?'+$('form[name="{{script['name']}}"]').serialize());
+                                var $message = $('#{{script['name']}}message');
+                                var $content = $('#{{script['name']}}content');
+                                {{script['name']}}ws.onopen = function(){
+                                  $message.attr("class", 'label label-success');
+                                  $message.text('open');
+                                };
+                                {{script['name']}}ws.onmessage = function(ev){
+                                  $message.attr("class", 'label label-info');
+                                  $message.hide();
+                                  $message.fadeIn("fast");
+                                  $message.text('received message');
+                                  $content.append(ev.data);
+                                  $content.scrollTop(9999999999999);
+                                };
+                                {{script['name']}}ws.onclose = function(ev){
+                                  $message.attr("class", 'label label-important');
+                                  $message.text('closed');
+                                };
+                                {{script['name']}}ws.onerror = function(ev){
+                                  $message.attr("class", 'label label-warning');
+                                  $message.text('error occurred');
+                                };
+                            }
+                        )
+                    });
+
+                  </script>
+
+                {% end %}
+            </div>
+
+            <div class="col-xs-6 pull-right">
+                <br>
+                <a href="javascript:ReverseDisplay('{{script['name']}}div')">
+                    <span class="glyphicon glyphicon-console"></span>
+                </a>
+                <span class="label label-info" id="{{script['name']}}message"></span>
+                <span id="{{script['name']}}div" style="display:none;">
+                <!--<span id="{{script['name']}}div">-->
+                    <pre id="{{script['name']}}content" style="max-height:200px;overflow: scroll;"></pre>
+                </span>
+            </div>
+
+          </div>
+
+        {% end %}
+      </ul>
+  </div>
+
+  </div>
 </body>
 </html>

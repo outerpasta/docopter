@@ -1,10 +1,10 @@
+#!/usr/bin/env python
 """Get User Script.
 Usage:
   get_user [options] <env> <email>
 
 Options:
   --level=VALUE   print a list [default: 0]
-  --cat=VALUE     print a cat
   -h --help       Show this screen.
   --version       Show version.
 """

@@ -1,6 +1,7 @@
+#!/usr/bin/env python
 """Get Token.
 Usage:
-  get_token [<env>]
+  get_token <env>
 """
 from docopt import docopt
 

@@ -7,6 +7,7 @@ import tornado.httpserver
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
+from tornado.escape import xhtml_escape
 from tornado.options import define, options
 from tornado.process import Subprocess
 from tornado.iostream import StreamClosedError
@@ -77,8 +78,7 @@ class LogStreamer(tornado.websocket.WebSocketHandler):
     def write_line(self, data):
         try:
             logging.info("Returning to client: %s" % data.strip())
-            self.write_message(data.strip() + "<br/>")
-            # from IPython import embed;embed()
+            self.write_message(xhtml_escape(data.strip()) + "<br/>")
             self.proc.stdout.read_until("\n", self.write_line)
         except StreamClosedError:
             logging.info("StreamClosedError")
@@ -86,7 +86,7 @@ class LogStreamer(tornado.websocket.WebSocketHandler):
     def write_error(self, data):
         if data:
             logging.info("Returning to client: %s" % data.strip())
-            self.write_message("<font color=red>" + data.strip() + "</font><br/>")
+            self.write_message("<font color=red>" + xhtml_escape(data.strip()) + "</font><br/>")
         # from IPython import embed;embed()
         # self.proc.stdout.read_until("\n", self.write_line)
 

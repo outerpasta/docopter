@@ -5,7 +5,7 @@ Script output is shown in realtime using websockets.
 
 Currently only python and bash are supported.
 
-![DEMO](https://raw.githubusercontent.com/outerpasta/docopter/master/demo/Screen%20Shot%202016-02-01%20at%2012.24.10%20AM.png)
+![DEMO](https://raw.githubusercontent.com/outerpasta/docopter/master/demo/Screen%20Shot%202016-02-01%20at%201.01.00%20AM.png)
 
 ## Installation
 Requires python 2.7 - https://www.python.org/downloads/release/python-2710/

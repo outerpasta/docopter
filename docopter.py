@@ -15,7 +15,7 @@ from tornado.iostream import StreamClosedError
 from docloader import DocLoader
 import Settings
 
-define("port", default=7777, help="Run server on a specific port", type=int)
+define("port", default=80, help="Run server on a specific port", type=int)
 
 
 docloader = DocLoader()

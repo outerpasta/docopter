@@ -85,7 +85,7 @@ else { document.getElementById(d).style.display = "none"; }
                         $("#{{script['name']}}run").click(
                             function () {
                                 ShowContent('{{script['name']}}div');
-                                var {{script['name']}}ws = new WebSocket('ws://localhost:7777/{{script['name']}}?'+$('form[name="{{script['name']}}"]').serialize());
+                                var {{script['name']}}ws = new WebSocket('ws://localhost:8080/{{script['name']}}?'+$('form[name="{{script['name']}}"]').serialize());
                                 var $message = $('#{{script['name']}}message');
                                 var $content = $('#{{script['name']}}content');
                                 {{script['name']}}ws.onopen = function(){
